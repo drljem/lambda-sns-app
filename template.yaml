@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  lambda-python3.9
+
+  Sample SAM Template for lambda-python3.9
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 60
+    MemorySize: 128
+
+Resources:
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: hello_world/
+      Handler: app.lambda_handler
+      Tracing: Active
+
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        Stream:
+          Type: Kinesis
+          Properties:
+            Stream: arn:aws:kinesis:eu-north-1:533950634958:stream/OrderRateAlarms
+            StartingPosition: LATEST
+            BatchSize: 100
+
+
